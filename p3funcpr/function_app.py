@@ -27,7 +27,7 @@ def nutrition(req: func.HttpRequest) -> func.HttpResponse:
 
 
     container_client = blob_service_client.get_container_client(
-        "dataset"
+        "datasets"
     )
 
 

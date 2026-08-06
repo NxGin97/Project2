@@ -5,7 +5,9 @@
       "appLocation": ".",
       "outputLocation": ".",
       "appBuildCommand": "",
-      "run": "index.html"
+      "run": "index.html",
+      "appName": "natp3swa",
+      "resourceGroup": "p3rg"
     }
   }
 }

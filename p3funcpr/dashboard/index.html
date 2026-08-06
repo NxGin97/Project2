@@ -97,8 +97,9 @@
             Get Clusters
           </button>
         </div>
+      </section>
 
-        <div class="bg-white shadow rounded p-4 mt-4">
+        <!-- <div class="bg-white shadow rounded p-4 mt-4">
           <h3 class="font-semibold">Function Metadata</h3>
 
           <p>
@@ -111,23 +112,52 @@
             <span id="recordCount"> Not loaded </span>
           </p>
         </div>
-      </section>
+      </section> -->
 
-      <section>
-        <h2 class="text-2xl font-semibold mb-4">Pagination</h2>
-        <div class="flex justify-center gap-2 mt-4">
-          <button class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">
-            Previous
-          </button>
-          <button class="px-3 py-1 bg-blue-600 text-white rounded">1</button>
-          <button class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">
-            2
-          </button>
-          <button class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">
-            Next
-          </button>
-        </div>
-      </section>
+              <!-- Security & Compliance -->
+        <section class="mt-8">
+            <h2 class="text-2xl font-semibold mb-4">Security & Compliance</h2>
+            <div class="bg-white p-4 shadow-lg rounded-lg">
+                <h3 class="font-semibold">Security Status</h3>
+                <p class="text-sm text-gray-600">Encryption: <span class="font-semibold text-green-600">Enabled</span></p>
+                <p class="text-sm text-gray-600">Access Control: <span class="font-semibold text-green-600">Secure</span></p>
+                <p class="text-sm text-gray-600">Compliance: <span class="font-semibold text-green-600">GDPR Compliant</span></p>
+            </div>
+        </section>
+
+        <!-- OAuth / 2FA Integration -->
+        <section class="mt-8">
+            <h2 class="text-2xl font-semibold mb-4">OAuth & 2FA Integration</h2>
+            <div class="bg-white p-4 shadow-lg rounded-lg">
+                <h3 class="font-semibold">Secure Login</h3>
+                <button class="bg-blue-600 text-white py-2 px-4 rounded mb-4">Login with Google</button>
+                <button class="bg-blue-600 text-white py-2 px-4 rounded mb-4">Login with GitHub</button>
+                <div class="mt-4">
+                    <label for="2fa" class="block text-sm text-gray-600">Enter 2FA Code</label>
+                    <input id="2fa" type="text" class="p-2 border rounded w-full" placeholder="Enter your 2FA code">
+                </div>
+            </div>
+        </section>
+
+        <!-- Cloud Resource Cleanup -->
+        <section class="mt-8">
+            <h2 class="text-2xl font-semibold mb-4">Cloud Resource Cleanup</h2>
+            <div class="bg-white p-4 shadow-lg rounded-lg">
+                <p class="text-sm text-gray-600">Ensure that cloud resources are efficiently managed and cleaned up post-deployment.</p>
+                <button class="bg-red-600 text-white py-2 px-4 rounded">Clean Up Resources</button>
+            </div>
+        </section>
+
+        <!-- Pagination -->
+        <section>
+            <h2 class="text-2xl font-semibold mb-4">Pagination</h2>
+            <div class="flex justify-center gap-2 mt-4">
+                <button class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">Previous</button>
+                <button class="px-3 py-1 bg-blue-600 text-white rounded">1</button>
+                <button class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">2</button>
+                <button class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">Next</button>
+            </div>
+        </section>
     </main>
 
     <footer class="bg-blue-600 p-4 text-white text-center mt-10">
@@ -147,7 +177,7 @@
           .addEventListener("click", async function () {
             try {
               const response = await fetch(
-                "https://natp2func.azurewebsites.net/api/nutrition", //"https://natp2func.azurewebsites.net/api/nutrition" "http://localhost:7071/api/nutrition"
+                "https://natp3func.azurewebsites.net/api/nutrition", //"https://natp3func.azurewebsites.net/api/nutrition" "http://localhost:7071/api/nutrition"
               );
 
               const data = await response.json();
