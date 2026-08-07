@@ -19,7 +19,11 @@ def clean_dataset(myblob: func.InputStream):
 # Cleaning
     print("CSV Updated.")
     
-    df = pd.read_csv(myblob)
+    blob_data = myblob.read()
+
+    df = pd.read_csv(
+        io.BytesIO(blob_data)
+    )
     
     numeric_columns = [
         "Protein(g)",
