@@ -10,6 +10,52 @@ from datetime import datetime
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
+@app.blob_trigger(
+    arg_name="myblob",
+    path="datasets/All_Diets.csv",
+    connection="AzureWebJobsStorage"
+)
+def clean_dataset(myblob: func.InputStream):
+# Cleaning
+    print("CSV Updated.")
+    
+    df = pd.read_csv(myblob)
+    
+    numeric_columns = [
+        "Protein(g)",
+        "Carbs(g)",
+        "Fat(g)"
+    ]
+    
+    for col in numeric_columns:
+        df[col] = df[col].fillna(df[col].mean())
+        
+    clean_csv = df.to_csv(index=False)
+    
+    
+    connection_string = os.environ["AzureWebJobsStorage"]
+
+    blob_service_client = BlobServiceClient.from_connection_string(
+        connection_string
+    )
+
+
+    processed_container = (
+        blob_service_client.get_container_client(
+            "processed"
+        )
+    )
+
+    processed_blob = (
+        processed_container.get_blob_client(
+            "Clean_Diets.csv"
+        )
+    )
+
+    processed_blob.upload_blob(
+        clean_csv,
+        overwrite=True
+    )
 
 @app.route(
     route="nutrition",
@@ -27,12 +73,12 @@ def nutrition(req: func.HttpRequest) -> func.HttpResponse:
 
 
     container_client = blob_service_client.get_container_client(
-        "datasets"
+        "processed"
     )
 
 
     blob_client = container_client.get_blob_client(
-        "All_Diets.csv"
+        "Clean_Diets.csv"
     )
 
 
@@ -42,17 +88,6 @@ def nutrition(req: func.HttpRequest) -> func.HttpResponse:
     df = pd.read_csv(
         io.BytesIO(blob_data)
     )
-
-
-    # Cleaning
-    numeric_columns = [
-        "Protein(g)",
-        "Carbs(g)",
-        "Fat(g)"
-    ]
-
-    for col in numeric_columns:
-        df[col] = df[col].fillna(df[col].mean())
 
 
     # ----------------------
@@ -151,3 +186,4 @@ def nutrition(req: func.HttpRequest) -> func.HttpResponse:
         json.dumps(result),
         mimetype="application/json"
     )
+    
