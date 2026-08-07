@@ -65,12 +65,13 @@
         </h2>
         <div class="flex flex-wrap gap-2">
           <input
+            id="dietSearch"
             type="text"
             placeholder="Search by Diet Type"
-            class="p-2 border rounded w-full sm:w-auto"
+            class="py-2 pl-2 border rounded w-full sm:w-auto"
           />
           <select id="dietFilter" class="p-2 border rounded w-full sm:w-auto">
-            <option value="all">All Diet Types</option>
+            <option value="all">Diet Options</option>
             <option value="vegan">Vegan</option>
             <option value="keto">Keto</option>
             <option value="dash">Dash</option>
@@ -78,29 +79,20 @@
             <option value="mediterranean">Mediterranean</option>
             <!-- Add more options -->
           </select>
-        </div>
-      </section>
-
-      <section class="mb-3">
-        <input
+          <input
           id="recipeSearch"
           type="text"
-          placeholder="Search recipes by word"
+          placeholder="Search by Keyword"
           class="p-2 border rounded"
-        />
-
-        <button
-          id="searchRecipes"
-          class="bg-green-600 text-white py-2 px-4 rounded"
-        >
-          Get Recipes
-        </button>
+          />
+      </div>
       </section>
 
-      <section>
+
+      <section class="mb-5">
         <div id="recipeResults"></div>
-        <button id="previousPage">Previous</button>
-        <button id="nextPage">Next</button>
+        <button id="previousPage" class=" bg-green-600 text-white py-2 px-4 rounded">Previous</button>
+        <button id="nextPage" class="bg-green-600 text-white py-2 px-4 rounded">Next</button>
       </section>
 
       <section class="mb-8">
@@ -112,6 +104,12 @@
           >
             Get Nutritional Insights
           </button>
+          <button
+          id="searchRecipes"
+          class="bg-green-600 text-white py-2 px-4 rounded"
+          >
+          Get Recipes
+        </button>
           <button class="bg-purple-600 text-white py-2 px-4 rounded">
             Get Clusters
           </button>
@@ -192,6 +190,8 @@
         </div>
       </section>
 
+
+      
       <!-- Pagination -->
       <section>
         <h2 class="text-2xl font-semibold mb-4">Pagination</h2>
@@ -220,14 +220,19 @@
 
         async function loadRecipes() {
           let diet = document.getElementById("dietFilter").value;
+          let dietKeyword = document.getElementById("dietSearch").value;
 
           let keyword = document.getElementById("recipeSearch").value;
 
-          let url = `https://natp3func.azurewebsites.net/api/recipes?page=${currentPage}&page_size=10`;
+          let url = `https://natp3func.azurewebsites.net/api/recipes?page=${currentPage}&page_size=5`;
 
           if (diet != "all") {
             url += `&diet=${diet}`;
           }
+
+          if (dietKeyword) {
+            url += `&diet=${dietKeyword}`;
+        }
 
           if (keyword) {
             url += `&keyword=${keyword}`;
@@ -243,27 +248,46 @@
 
           let html = "";
 
-          data.recipes.forEach((recipe) => {
-            html += `
-        <div class="bg-white p-4 shadow rounded">
-            <h3 class="font-semibold">
-                ${recipe.Recipe_name}
-            </h3>
+if (data.recipes.length === 0) {
 
-            <p>
-                Diet:
-                ${recipe.Diet_type}
-            </p>
+  html = `
+    <div class="bg-white p-4 shadow rounded">
+        <p class="text-gray-600">
+            No recipes found.
+        </p>
+    </div>
+  `;
 
-            <p>
-                Cuisine:
-                ${recipe.Cuisine}
-            </p>
-        </div>
-        `;
-          });
+}
+else {
 
-          document.getElementById("recipeResults").innerHTML = html;
+  data.recipes.forEach((recipe) => {
+
+    html += `
+    <div class="bg-white p-4 shadow rounded mb-3">
+
+        <h3 class="font-semibold">
+            ${recipe.Recipe_name}
+        </h3>
+
+        <p>
+            Diet:
+            ${recipe.Diet_type}
+        </p>
+
+        <p>
+            Cuisine:
+            ${recipe.Cuisine_type}
+        </p>
+
+    </div>
+    `;
+
+  });
+
+}
+
+document.getElementById("recipeResults").innerHTML = html;
         }
         document
           .getElementById("searchRecipes")
@@ -293,9 +317,13 @@
           .getElementById("dietFilter")
           .addEventListener("change", function () {
             currentPage = 1;
-
-            loadRecipes();
           });
+
+          document
+            .getElementById("dietSearch")
+            .addEventListener("input", function () {
+                currentPage = 1;
+            });
         let barChart;
         let scatterChart;
         let pieChart;
@@ -323,7 +351,7 @@
 
               const filter = document.getElementById("dietFilter");
 
-              filter.innerHTML = '<option value="all">All Diet Types</option>';
+              filter.innerHTML = '<option value="all">Diet Options</option>';
 
               nutritionData.forEach((item) => {
                 let option = document.createElement("option");
