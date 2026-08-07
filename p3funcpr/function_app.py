@@ -5,6 +5,8 @@ import io
 import os
 import pandas as pd
 import json
+from datetime import datetime, timezone
+import time
 
 
 app = func.FunctionApp(
@@ -148,6 +150,11 @@ def clean_dataset(myblob: func.InputStream):
 
 
     cache_result = {
+        
+    "cache_status": "Redis Cache",
+
+    "cache_generated":
+        datetime.now(datetime.timezone.utc).isoformat(),
 
     "records_processed": int(len(df)),
 

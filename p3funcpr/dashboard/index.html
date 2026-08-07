@@ -99,6 +99,17 @@
         </div>
       </section>
 
+      <section>
+        <div class="bg-white shadow rounded p-4 mt-4">
+          <h3 class="font-semibold">Caching Information</h3>
+
+          <p><span id="cache-status"> Not loaded </span></p>
+          <p><span id="cache-time"> Not loaded </span></p>
+          <p><span id="records"> Not loaded </span></p>
+          <p><span id="response-time"> Not loaded </span></p>
+          <p>Records Processed:<span id="recordCount"> Not loaded </span></p>
+        </div>
+
         <!-- <div class="bg-white shadow rounded p-4 mt-4">
           <h3 class="font-semibold">Function Metadata</h3>
 
@@ -176,6 +187,7 @@
           .getElementById("loadData")
           .addEventListener("click", async function () {
             try {
+              const startTime = performance.now();
               const response = await fetch(
                 "https://natp3func.azurewebsites.net/api/nutrition", //"https://natp3func.azurewebsites.net/api/nutrition" "http://localhost:7071/api/nutrition"
               );
@@ -185,9 +197,41 @@
               // document.getElementById("executionTime").innerText =
               //   data.execution_time;
 
-              // document.getElementById("recordCount").innerText =
-              //   data.records_processed;
-              // console.log(data);
+              document.getElementById("recordCount").innerText =
+                data.records_processed;
+              console.log(data);
+
+              const endTime = performance.now();
+
+              const responseTime =
+                  (endTime - startTime).toFixed(2);
+
+
+              document.getElementById(
+                  "cache-status"
+              ).innerHTML =
+                  "Cache: " + data.cache_status;
+
+
+              document.getElementById(
+                  "cache-time"
+              ).innerHTML =
+                  "Generated: " + data.cache_generated;
+
+
+              document.getElementById(
+                  "records"
+              ).innerHTML =
+                  "Records processed: " +
+                  data.records_processed;
+
+
+              document.getElementById(
+                  "response-time"
+              ).innerHTML =
+                  "API Response Time: " +
+                  responseTime +
+                  " ms";
 
 							nutritionData = data.nutrition_data;
 
