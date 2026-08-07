@@ -19,99 +19,112 @@
   <body class="bg-gray-100">
     <header class="bg-blue-600 p-4 text-white">
       <h1 class="text-3xl font-semibold">Nutritional Insights</h1>
-      <div class="text-xl font-semibold" id="userInfo"></div>
     </header>
 
     <div
-  id="authContainer"
-  class="min-h-screen flex items-center justify-center bg-gray-100"
->
-  <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+      id="authContainer"
+      class="min-h-screen flex items-center justify-center bg-gray-100"
+    >
+      <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+        <!-- Register -->
+        <div id="registerPanel" class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Create Account</h3>
 
-    <!-- Register -->
-    <div id="registerPanel" class="mb-8">
-      <h3 class="text-xl font-semibold mb-4">Create Account</h3>
+          <input
+            id="regEmail"
+            type="email"
+            placeholder="Email"
+            class="w-full p-3 border rounded mb-3"
+          />
 
-      <input
-        id="regEmail"
-        type="email"
-        placeholder="Email"
-        class="w-full p-3 border rounded mb-3"
-      />
+          <input
+            id="regUsername"
+            placeholder="Username"
+            class="w-full p-3 border rounded mb-3"
+          />
 
-      <input
-        id="regUsername"
-        placeholder="Username"
-        class="w-full p-3 border rounded mb-3"
-      />
-
-      <input
-        id="regPassword"
-        type="password"
-        placeholder="Password"
-        class="w-full p-3 border rounded mb-4"
-      />
-
-      <button
-        id="registerBtn"
-        class="w-full bg-green-600 text-white py-3 rounded"
-      >
-        Register
-      </button>
-    </div>
-
-    <!-- Login -->
-    <div id="loginPanel">
-      <h3 class="text-xl font-semibold mb-4">Login</h3>
-
-      <input
-        id="loginEmail"
-        type="email"
-        placeholder="Email"
-        class="w-full p-3 border rounded mb-3"
-      />
-
-      <input
-        id="loginPassword"
-        type="password"
-        placeholder="Password"
-        class="w-full p-3 border rounded mb-4"
-      />
-
-      <button
-        id="loginBtn"
-        class="w-full bg-blue-600 text-white py-3 rounded mb-4"
-      >
-        Login
-      </button>
-
-      <div class="border-t pt-4">
-        <p class="text-center text-gray-600 mb-3">
-          Or sign in with
-        </p>
-
-        <div class="flex gap-3">
-          <button
-            onclick="window.location.href='/.auth/login/google'"
-            class="flex-1 bg-red-500 text-white py-2 rounded"
-          >
-            Google
-          </button>
+          <input
+            id="regPassword"
+            type="password"
+            placeholder="Password"
+            class="w-full p-3 border rounded mb-4"
+          />
 
           <button
-            onclick="window.location.href='/.auth/login/github'"
-            class="flex-1 bg-gray-800 text-white py-2 rounded"
+            id="registerBtn"
+            class="w-full bg-green-600 text-white py-3 rounded"
           >
-            GitHub
+            Register
           </button>
+        </div>
+
+        <!-- Login -->
+        <div id="loginPanel">
+          <h3 class="text-xl font-semibold mb-4">Login</h3>
+
+          <input
+            id="loginEmail"
+            type="email"
+            placeholder="Email"
+            class="w-full p-3 border rounded mb-3"
+          />
+
+          <input
+            id="loginPassword"
+            type="password"
+            placeholder="Password"
+            class="w-full p-3 border rounded mb-4"
+          />
+
+          <button
+            id="loginBtn"
+            class="w-full bg-blue-600 text-white py-3 rounded mb-4"
+          >
+            Login
+          </button>
+
+          <div class="border-t pt-4">
+            <p class="text-center text-gray-600 mb-3">Or sign in with</p>
+
+            <div class="flex gap-3">
+              <button
+                onclick="window.location.href = '/.auth/login/google'"
+                class="flex-1 bg-red-500 text-white py-2 rounded"
+              >
+                Google
+              </button>
+
+              <button
+                onclick="window.location.href = '/.auth/login/github'"
+                class="flex-1 bg-gray-800 text-white py-2 rounded"
+              >
+                GitHub
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-  </div>
-</div>
+    <!-- Dashboard Header -->
+    <main id="dashboard" style="display: none" class="container mx-auto p-6">
+    <header
+      class="bg-blue-600 text-white p-4 mb-8 flex justify-between items-center"
+    >
+      <div>
+        <h1 class="text-2xl font-bold">Nutritional Insights</h1>
 
-    <main id="dashboard" style="display:none" class="container mx-auto p-6">
+        <p class="text-sm">Welcome, <span id="dashboardUsername">User</span></p>
+      </div>
+
+      <button
+        id="logoutBtn"
+        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+      >
+        Logout
+      </button>
+    </header>
+
       <section class="mb-8">
         <h2 class="text-2xl font-semibold mb-4">
           Explore Nutritional Insights
@@ -247,47 +260,6 @@
         </div>
       </section>
 
-      <!-- OAuth / 2FA Integration -->
-      <section class="mt-8">
-        <h2 class="text-2xl font-semibold mb-4">OAuth & 2FA Integration</h2>
-        <div class="bg-white p-4 shadow-lg rounded-lg">
-          <h3 class="font-semibold">Secure Login</h3>
-
-          <div id="loginSection">
-          <button
-          onclick="window.location.href = '/.auth/login/github'"
-          class="bg-blue-600 text-white py-2 px-4 rounded"
-          >
-          Login with GitHub
-        </button>
-        
-        <button
-        onclick="window.location.href = '/.auth/login/google'"
-        class="bg-blue-600 text-white py-2 px-4 rounded"
-        >
-        Login with Google
-      </button>
-      <button
-      onclick="window.location.href = '/.auth/logout'"
-      class="bg-red-600 text-white px-4 py-2 rounded"
-      >
-      Logout
-    </button>
-  </div>
-          <div class="mt-4">
-            <label for="2fa" class="block text-sm text-gray-600"
-              >Enter 2FA Code</label
-            >
-            <input
-              id="2fa"
-              type="text"
-              class="p-2 border rounded w-full"
-              placeholder="Enter your 2FA code"
-            />
-          </div>
-        </div>
-      </section>
-
       <!-- Cloud Resource Cleanup -->
       <section class="mt-8">
         <h2 class="text-2xl font-semibold mb-4">Cloud Resource Cleanup</h2>
@@ -326,108 +298,103 @@
 
     <script>
       async function getUser() {
+        try {
+          const response = await fetch("/.auth/me");
+          const data = await response.json();
 
-    let response = await fetch("/.auth/me");
+          console.log("SWA authentication:", data);
 
-    let data = await response.json();
+          if (data.clientPrincipal) {
+            // User is authenticated
 
-    if (data.clientPrincipal) {
+            document.getElementById("authContainer").style.display = "none";
 
-        document.getElementById("userInfo").innerHTML =
-            "Logged in as: " +
-            data.clientPrincipal.userDetails;
+            document.getElementById("dashboard").style.display = "block";
 
-        document.getElementById("loginSection")
-            .style.display = "none";
-    }
-    else {
+            // Get username/email from Azure
+            const username =
+              data.clientPrincipal.userDetails ||
+              data.clientPrincipal.claims?.find(
+                (claim) =>
+                  claim.typ === "email" || claim.typ === "preferred_username",
+              )?.val ||
+              "User";
 
-        document.getElementById("dashboard")
-            .style.display = "none";
+            document.getElementById("dashboardUsername").textContent = username;
+          } else {
+            // User is NOT authenticated
 
-        document.getElementById("loginSection")
-            .style.display = "block";
-    }
-}
-document
-.getElementById("registerBtn")
-.addEventListener("click", async () => {
+            document.getElementById("authContainer").style.display = "flex";
 
-    await fetch(
-        "https://natp3func.azurewebsites.net/api/register",
-        {
-            method:"POST",
+            document.getElementById("dashboard").style.display = "none";
+          }
+        } catch (error) {
+          console.error("Authentication check failed:", error);
 
-            headers:{
-                "Content-Type":
-                "application/json"
+          document.getElementById("authContainer").style.display = "flex";
+
+          document.getElementById("dashboard").style.display = "none";
+        }
+      }
+
+      document
+        .getElementById("logoutBtn")
+        .addEventListener("click", function () {
+          window.location.href = "/.auth/logout";
+        });
+
+      document
+        .getElementById("registerBtn")
+        .addEventListener("click", async () => {
+          await fetch("https://natp3func.azurewebsites.net/api/register", {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json",
             },
 
-            body:JSON.stringify({
-                email:
-                document.getElementById(
-                    "regEmail"
-                ).value,
+            body: JSON.stringify({
+              email: document.getElementById("regEmail").value,
 
-                username:
-                document.getElementById(
-                    "regUsername"
-                ).value,
+              username: document.getElementById("regUsername").value,
 
-                password:
-                document.getElementById(
-                    "regPassword"
-                ).value
-            })
-        }
-    );
+              password: document.getElementById("regPassword").value,
+            }),
+          });
+        });
 
-});
+      document
+        .getElementById("loginBtn")
+        .addEventListener("click", async () => {
+          const response = await fetch(
+            "https://natp3func.azurewebsites.net/api/login",
+            {
+              method: "POST",
 
-document
-.getElementById("loginBtn")
-.addEventListener("click", async () => {
+              headers: {
+                "Content-Type": "application/json",
+              },
 
-    const response = await fetch(
-        "https://natp3func.azurewebsites.net/api/login",
-        {
-            method:"POST",
+              body: JSON.stringify({
+                email: document.getElementById("loginEmail").value,
 
-            headers:{
-                "Content-Type":
-                "application/json"
+                password: document.getElementById("loginPassword").value,
+              }),
             },
+          );
 
-            body:JSON.stringify({
-                email:
-                document.getElementById(
-                    "loginEmail"
-                ).value,
+          const data = await response.json();
 
-                password:
-                document.getElementById(
-                    "loginPassword"
-                ).value
-            })
-        }
-    );
+          if (data.authenticated) {
+            document.getElementById("loginPanel").style.display = "none";
 
-    const data =
-        await response.json();
+            document.querySelector("main").style.display = "block";
+          }
+        });
 
-    if(data.authenticated){
+      document.addEventListener("DOMContentLoaded", async function () {
+        await getUser();
 
-        document.getElementById(
-            "loginPanel"
-        ).style.display = "none";
-
-        document.querySelector(
-            "main"
-        ).style.display = "block";
-    }
-});
-
-      document.addEventListener("DOMContentLoaded", function () {
         let currentPage = 1;
 
         async function loadRecipes() {
@@ -530,11 +497,6 @@ document
             currentPage = 1;
           });
 
-
-          document
-            .getElementById("dashboard")
-            .style.display="block";
-
         let barChart;
         let scatterChart;
         let pieChart;
@@ -545,43 +507,11 @@ document
           .getElementById("loadData")
           .addEventListener("click", async function () {
             try {
-              const account =
-msalInstance.getAllAccounts()[0];
+              const response = await fetch(
+                "https://natp3func.azurewebsites.net/api/nutrition",
+              );
 
-
-const token =
-await msalInstance.acquireTokenSilent({
-
-scopes:[
-"User.Read"
-],
-
-account:account
-
-});
-
-
-const response =
-await fetch(
-"https://natp3func.azurewebsites.net/api/nutrition",
-{
-
-headers:{
-
-Authorization:
-"Bearer " + token.accessToken
-
-}
-
-});
               const data = await response.json();
-
-              // document.getElementById("executionTime").innerText =
-              //   data.execution_time;
-
-              // document.getElementById("recordCount").innerText =
-              //   data.records_processed;
-              // console.log(data);
 
               nutritionData = data.nutrition_data;
 
@@ -629,11 +559,6 @@ Authorization:
                 },
               });
 
-              /*
-                               -------------------------
-                               SCATTER PLOT
-                               -------------------------
-                               */
 
               const scatterData = data.scatter_data.map((item) => ({
                 x: item["Protein(g)"],
@@ -675,11 +600,7 @@ Authorization:
                 },
               });
 
-              /*
-                               -------------------------
-                               PIE CHART
-                               -------------------------
-                               */
+
 
               const pieLabels = data.diet_distribution.map(
                 (item) => item.Diet_type,
@@ -709,11 +630,7 @@ Authorization:
                 },
               });
 
-              /*
-                               -------------------------
-                               HEATMAP
-                               -------------------------
-                               */
+
 
               const heatmapData = [];
 
