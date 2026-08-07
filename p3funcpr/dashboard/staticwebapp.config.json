@@ -8,7 +8,7 @@
 
   "responseOverrides": {
     "401": {
-      "redirect": "/login.html"
+      "redirect": "/index.html"
     }
   }
 }
