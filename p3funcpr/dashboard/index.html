@@ -21,6 +21,12 @@
       <h1 class="text-3xl font-semibold">Nutritional Insights</h1>
     </header>
     <div id="authContainer" class="min-h-screen flex items-center justify-center bg-gray-100">
+      <div
+        id="notification"
+        class="hidden fixed top-5 right-5 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg"
+      >
+        Account registered successfully!
+      </div>
       <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
         <!-- Register -->
         <div id="registerPanel" class="mb-8">
@@ -337,45 +343,7 @@
           window.location.href = "/.auth/logout";
         });
 
-      document
-        .getElementById("registerBtn")
-        .addEventListener("click", async () => {
-          await fetch("https://natp3func.azurewebsites.net/api/register", {
-            method: "POST",
 
-            headers: {
-              "Content-Type": "application/json",
-            },
-
-            body: JSON.stringify({
-              email: document.getElementById("regEmail").value,
-
-              username: document.getElementById("regUsername").value,
-
-              password: document.getElementById("regPassword").value,
-            }),
-          });
-        });
-
-      document
-        .getElementById("loginBtn")
-        .addEventListener("click", async () => {
-          const response = await fetch(
-            "https://natp3func.azurewebsites.net/api/login",
-            {
-              method: "POST",
-
-              headers: {
-                "Content-Type": "application/json",
-              },
-
-              body: JSON.stringify({
-                email: document.getElementById("loginEmail").value,
-
-                password: document.getElementById("loginPassword").value,
-              }),
-            },
-          );
 
           const data = await response.json();
 
@@ -384,10 +352,147 @@
 
             document.querySelector("main").style.display = "block";
           }
-        });
 
       document.addEventListener("DOMContentLoaded", async function () {
         await getUser();
+
+        // REGISTER
+document
+  .getElementById("registerBtn")
+  .addEventListener("click", async function () {
+
+    const email = document.getElementById("regEmail").value;
+    const username = document.getElementById("regUsername").value;
+    const password = document.getElementById("regPassword").value;
+
+    if (!email || !username || !password) {
+      alert("Please fill in all registration fields.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "https://natp3func.azurewebsites.net/api/register",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            email: email,
+            username: username,
+            password: password
+          })
+        }
+      );
+
+      const result = await response.text();
+
+      if (response.ok) {
+
+        // Clear registration fields
+        document.getElementById("regEmail").value = "";
+        document.getElementById("regUsername").value = "";
+        document.getElementById("regPassword").value = "";
+
+        const notification = document.getElementById("notification");
+
+        notification.textContent = "Account registered successfully!";
+        notification.classList.remove("hidden");
+
+        setTimeout(() => {
+          notification.classList.add("hidden");
+        }, 3000);
+
+      } else {
+
+        alert("Registration failed: " + result);
+
+      }
+
+    } catch (error) {
+
+      console.error("Registration error:", error);
+
+      alert("Unable to register account.");
+
+    }
+  });
+
+
+// LOGIN
+document
+  .getElementById("loginBtn")
+  .addEventListener("click", async function () {
+
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+
+    if (!email || !password) {
+      alert("Please enter your email and password.");
+      return;
+    }
+
+    try {
+
+      const response = await fetch(
+        "https://natp3func.azurewebsites.net/api/login",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            email: email,
+            password: password
+          })
+        }
+      );
+
+      const result = await response.text();
+
+      if (response.ok) {
+
+        const data = JSON.parse(result);
+
+        if (data.authenticated) {
+
+          // Hide login page
+          document.getElementById("authContainer").style.display = "none";
+
+          document.getElementById("loginHeader").style.display = "none";
+
+          // Show dashboard
+          document.getElementById("dashboard").style.display = "block";
+
+          // Display username
+          document.getElementById("dashboardUsername").textContent =
+            data.username;
+
+          // Clear login fields
+          document.getElementById("loginEmail").value = "";
+          document.getElementById("loginPassword").value = "";
+
+        }
+
+      } else {
+
+        alert("Invalid email or password.");
+
+      }
+
+    } catch (error) {
+
+      console.error("Login error:", error);
+
+      alert("Unable to connect to the login service.");
+
+    }
+  });
 
         let currentPage = 1;
 

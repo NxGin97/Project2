@@ -256,9 +256,9 @@ def register(req: func.HttpRequest):
         )
 
     password_hash = bcrypt.hashpw(
-        password.encode(),
+        password.encode("utf-8"),
         bcrypt.gensalt()
-    ).decode()
+    ).decode("utf-8")
 
     user = {
 
@@ -315,8 +315,8 @@ def login(req: func.HttpRequest):
     user = users[0]
 
     valid = bcrypt.checkpw(
-        password.encode(),
-        user["password_hash"].encode()
+        password.encode("utf-8"),
+        user["password_hash"].encode("utf-8")
     )
 
     if not valid:
