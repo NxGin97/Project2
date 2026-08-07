@@ -17,14 +17,10 @@
   </head>
 
   <body class="bg-gray-100">
-    <header class="bg-blue-600 p-4 text-white">
+    <header id="loginHeader" class="bg-blue-600 p-4 text-white">
       <h1 class="text-3xl font-semibold">Nutritional Insights</h1>
     </header>
-
-    <div
-      id="authContainer"
-      class="min-h-screen flex items-center justify-center bg-gray-100"
-    >
+    <div id="authContainer" class="container mx-auto p-6 bg-gray-100">
       <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
         <!-- Register -->
         <div id="registerPanel" class="mb-8">
@@ -108,22 +104,24 @@
 
     <!-- Dashboard Header -->
     <main id="dashboard" style="display: none" class="container mx-auto p-6">
-    <header
-      class="bg-blue-600 text-white p-4 mb-8 flex justify-between items-center"
-    >
-      <div>
-        <h1 class="text-2xl font-bold">Nutritional Insights</h1>
-
-        <p class="text-sm">Welcome, <span id="dashboardUsername">User</span></p>
-      </div>
-
-      <button
-        id="logoutBtn"
-        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+      <header
+        class="bg-blue-600 text-white p-4 mb-8 flex justify-between items-center"
       >
-        Logout
-      </button>
-    </header>
+        <div>
+          <h1 class="text-2xl font-bold">Nutritional Insights</h1>
+
+          <p class="text-sm">
+            Welcome, <span id="dashboardUsername">User</span>
+          </p>
+        </div>
+
+        <button
+          id="logoutBtn"
+          class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+        >
+          Logout
+        </button>
+      </header>
 
       <section class="mb-8">
         <h2 class="text-2xl font-semibold mb-4">
@@ -308,17 +306,16 @@
             // User is authenticated
 
             document.getElementById("authContainer").style.display = "none";
+            document.getElementById("loginHeader").style.display = "none";
 
             document.getElementById("dashboard").style.display = "block";
 
             // Get username/email from Azure
-            const username =
-              data.clientPrincipal.userDetails ||
-              data.clientPrincipal.claims?.find(
-                (claim) =>
-                  claim.typ === "email" || claim.typ === "preferred_username",
-              )?.val ||
-              "User";
+            const user = data.clientPrincipal;
+
+            // userDetails is normally the useful
+            // display name/email value
+            const username = user.userDetails || "User";
 
             document.getElementById("dashboardUsername").textContent = username;
           } else {
@@ -559,7 +556,6 @@
                 },
               });
 
-
               const scatterData = data.scatter_data.map((item) => ({
                 x: item["Protein(g)"],
                 y: item["Carbs(g)"],
@@ -600,8 +596,6 @@
                 },
               });
 
-
-
               const pieLabels = data.diet_distribution.map(
                 (item) => item.Diet_type,
               );
@@ -629,8 +623,6 @@
                   ],
                 },
               });
-
-
 
               const heatmapData = [];
 
