@@ -11,6 +11,7 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix@2.0.0/dist/chartjs-chart-matrix.js"></script>
+    <script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
     <script>
       Chart.register(ChartMatrixController, MatrixElement);
     </script>
@@ -19,9 +20,99 @@
   <body class="bg-gray-100">
     <header class="bg-blue-600 p-4 text-white">
       <h1 class="text-3xl font-semibold">Nutritional Insights</h1>
+      <div class="text-xl font-semibold" id="userInfo"></div>
     </header>
 
-    <main class="container mx-auto p-6">
+    <div
+  id="authContainer"
+  class="min-h-screen flex items-center justify-center bg-gray-100"
+>
+  <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+
+    <!-- Register -->
+    <div id="registerPanel" class="mb-8">
+      <h3 class="text-xl font-semibold mb-4">Create Account</h3>
+
+      <input
+        id="regEmail"
+        type="email"
+        placeholder="Email"
+        class="w-full p-3 border rounded mb-3"
+      />
+
+      <input
+        id="regUsername"
+        placeholder="Username"
+        class="w-full p-3 border rounded mb-3"
+      />
+
+      <input
+        id="regPassword"
+        type="password"
+        placeholder="Password"
+        class="w-full p-3 border rounded mb-4"
+      />
+
+      <button
+        id="registerBtn"
+        class="w-full bg-green-600 text-white py-3 rounded"
+      >
+        Register
+      </button>
+    </div>
+
+    <!-- Login -->
+    <div id="loginPanel">
+      <h3 class="text-xl font-semibold mb-4">Login</h3>
+
+      <input
+        id="loginEmail"
+        type="email"
+        placeholder="Email"
+        class="w-full p-3 border rounded mb-3"
+      />
+
+      <input
+        id="loginPassword"
+        type="password"
+        placeholder="Password"
+        class="w-full p-3 border rounded mb-4"
+      />
+
+      <button
+        id="loginBtn"
+        class="w-full bg-blue-600 text-white py-3 rounded mb-4"
+      >
+        Login
+      </button>
+
+      <div class="border-t pt-4">
+        <p class="text-center text-gray-600 mb-3">
+          Or sign in with
+        </p>
+
+        <div class="flex gap-3">
+          <button
+            onclick="window.location.href='/.auth/login/google'"
+            class="flex-1 bg-red-500 text-white py-2 rounded"
+          >
+            Google
+          </button>
+
+          <button
+            onclick="window.location.href='/.auth/login/github'"
+            class="flex-1 bg-gray-800 text-white py-2 rounded"
+          >
+            GitHub
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+    <main id="dashboard" style="display:none" class="container mx-auto p-6">
       <section class="mb-8">
         <h2 class="text-2xl font-semibold mb-4">
           Explore Nutritional Insights
@@ -80,19 +171,25 @@
             <!-- Add more options -->
           </select>
           <input
-          id="recipeSearch"
-          type="text"
-          placeholder="Search by Keyword"
-          class="p-2 border rounded"
+            id="recipeSearch"
+            type="text"
+            placeholder="Search by Keyword"
+            class="p-2 border rounded"
           />
-      </div>
+        </div>
       </section>
-
 
       <section class="mb-5">
         <div id="recipeResults"></div>
-        <button id="previousPage" class=" bg-green-600 text-white py-2 px-4 rounded">Previous</button>
-        <button id="nextPage" class="bg-green-600 text-white py-2 px-4 rounded">Next</button>
+        <button
+          id="previousPage"
+          class="bg-green-600 text-white py-2 px-4 rounded"
+        >
+          Previous
+        </button>
+        <button id="nextPage" class="bg-green-600 text-white py-2 px-4 rounded">
+          Next
+        </button>
       </section>
 
       <section class="mb-8">
@@ -105,11 +202,11 @@
             Get Nutritional Insights
           </button>
           <button
-          id="searchRecipes"
-          class="bg-green-600 text-white py-2 px-4 rounded"
+            id="searchRecipes"
+            class="bg-green-600 text-white py-2 px-4 rounded"
           >
-          Get Recipes
-        </button>
+            Get Recipes
+          </button>
           <button class="bg-purple-600 text-white py-2 px-4 rounded">
             Get Clusters
           </button>
@@ -156,12 +253,28 @@
         <h2 class="text-2xl font-semibold mb-4">OAuth & 2FA Integration</h2>
         <div class="bg-white p-4 shadow-lg rounded-lg">
           <h3 class="font-semibold">Secure Login</h3>
-          <button class="bg-blue-600 text-white py-2 px-4 rounded mb-4">
-            Login with Google
-          </button>
-          <button class="bg-blue-600 text-white py-2 px-4 rounded mb-4">
-            Login with GitHub
-          </button>
+
+          <div id="loginSection">
+          <button
+          onclick="window.location.href = '/.auth/login/github'"
+          class="bg-blue-600 text-white py-2 px-4 rounded"
+          >
+          Login with GitHub
+        </button>
+        
+        <button
+        onclick="window.location.href = '/.auth/login/google'"
+        class="bg-blue-600 text-white py-2 px-4 rounded"
+        >
+        Login with Google
+      </button>
+      <button
+      onclick="window.location.href = '/.auth/logout'"
+      class="bg-red-600 text-white px-4 py-2 rounded"
+      >
+      Logout
+    </button>
+  </div>
           <div class="mt-4">
             <label for="2fa" class="block text-sm text-gray-600"
               >Enter 2FA Code</label
@@ -190,8 +303,6 @@
         </div>
       </section>
 
-
-      
       <!-- Pagination -->
       <section>
         <h2 class="text-2xl font-semibold mb-4">Pagination</h2>
@@ -215,6 +326,108 @@
     </footer>
 
     <script>
+      async function getUser() {
+
+    let response = await fetch("/.auth/me");
+
+    let data = await response.json();
+
+    if (data.clientPrincipal) {
+
+        document.getElementById("userInfo").innerHTML =
+            "Logged in as: " +
+            data.clientPrincipal.userDetails;
+
+        document.getElementById("loginSection")
+            .style.display = "none";
+    }
+    else {
+
+        document.getElementById("dashboard")
+            .style.display = "none";
+
+        document.getElementById("loginSection")
+            .style.display = "block";
+    }
+}
+document
+.getElementById("registerBtn")
+.addEventListener("click", async () => {
+
+    await fetch(
+        "https://natp3func.azurewebsites.net/api/register",
+        {
+            method:"POST",
+
+            headers:{
+                "Content-Type":
+                "application/json"
+            },
+
+            body:JSON.stringify({
+                email:
+                document.getElementById(
+                    "regEmail"
+                ).value,
+
+                username:
+                document.getElementById(
+                    "regUsername"
+                ).value,
+
+                password:
+                document.getElementById(
+                    "regPassword"
+                ).value
+            })
+        }
+    );
+
+});
+
+document
+.getElementById("loginBtn")
+.addEventListener("click", async () => {
+
+    const response = await fetch(
+        "https://YOURFUNCTION/api/login",
+        {
+            method:"POST",
+
+            headers:{
+                "Content-Type":
+                "application/json"
+            },
+
+            body:JSON.stringify({
+                email:
+                document.getElementById(
+                    "loginEmail"
+                ).value,
+
+                password:
+                document.getElementById(
+                    "loginPassword"
+                ).value
+            })
+        }
+    );
+
+    const data =
+        await response.json();
+
+    if(data.authenticated){
+
+        document.getElementById(
+            "loginPanel"
+        ).style.display = "none";
+
+        document.querySelector(
+            "main"
+        ).style.display = "block";
+    }
+});
+
       document.addEventListener("DOMContentLoaded", function () {
         let currentPage = 1;
 
@@ -232,7 +445,7 @@
 
           if (dietKeyword) {
             url += `&diet=${dietKeyword}`;
-        }
+          }
 
           if (keyword) {
             url += `&keyword=${keyword}`;
@@ -248,22 +461,17 @@
 
           let html = "";
 
-if (data.recipes.length === 0) {
-
-  html = `
+          if (data.recipes.length === 0) {
+            html = `
     <div class="bg-white p-4 shadow rounded">
         <p class="text-gray-600">
             No recipes found.
         </p>
     </div>
   `;
-
-}
-else {
-
-  data.recipes.forEach((recipe) => {
-
-    html += `
+          } else {
+            data.recipes.forEach((recipe) => {
+              html += `
     <div class="bg-white p-4 shadow rounded mb-3">
 
         <h3 class="font-semibold">
@@ -282,12 +490,10 @@ else {
 
     </div>
     `;
+            });
+          }
 
-  });
-
-}
-
-document.getElementById("recipeResults").innerHTML = html;
+          document.getElementById("recipeResults").innerHTML = html;
         }
         document
           .getElementById("searchRecipes")
@@ -319,11 +525,42 @@ document.getElementById("recipeResults").innerHTML = html;
             currentPage = 1;
           });
 
+        document
+          .getElementById("dietSearch")
+          .addEventListener("input", function () {
+            currentPage = 1;
+          });
+
+        const msalConfig = {
+          auth: {
+            clientId: "e196017e-b85e-4af5-baca-8934439cd764",
+            authority: "https://login.microsoftonline.com/common",
+            redirectUri: window.location.origin,
+          },
+        };
+
+        const msalInstance = new msal.PublicClientApplication(msalConfig);
+
+        document
+          .getElementById("loginButton")
+          .addEventListener("click", async () => {
+            try {
+              const loginResponse = await msalInstance.loginPopup({
+                scopes: ["User.Read"],
+              });
+
+              console.log(loginResponse);
+
+              alert("Welcome " + loginResponse.account.name);
+            } catch (error) {
+              console.error(error);
+            }
+          });
+
           document
-            .getElementById("dietSearch")
-            .addEventListener("input", function () {
-                currentPage = 1;
-            });
+.getElementById("dashboard")
+.style.display="block";
+
         let barChart;
         let scatterChart;
         let pieChart;
@@ -334,10 +571,35 @@ document.getElementById("recipeResults").innerHTML = html;
           .getElementById("loadData")
           .addEventListener("click", async function () {
             try {
-              const response = await fetch(
-                "https://natp3func.azurewebsites.net/api/nutrition", //"https://natp3func.azurewebsites.net/api/nutrition" "http://localhost:7071/api/nutrition"
-              );
+              const account =
+msalInstance.getAllAccounts()[0];
 
+
+const token =
+await msalInstance.acquireTokenSilent({
+
+scopes:[
+"User.Read"
+],
+
+account:account
+
+});
+
+
+const response =
+await fetch(
+"https://natp3func.azurewebsites.net/api/nutrition",
+{
+
+headers:{
+
+Authorization:
+"Bearer " + token.accessToken
+
+}
+
+});
               const data = await response.json();
 
               // document.getElementById("executionTime").innerText =

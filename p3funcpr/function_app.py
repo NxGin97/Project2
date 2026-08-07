@@ -5,13 +5,28 @@ import io
 import os
 import pandas as pd
 import json
-
+from azure.cosmos import CosmosClient
+import bcrypt
 
 
 app = func.FunctionApp(
     http_auth_level=func.AuthLevel.ANONYMOUS
 )
 
+def get_user_container():
+
+    client = CosmosClient(
+        os.environ["COSMOS_ENDPOINT"],
+        credential=os.environ["COSMOS_KEY"]
+    )
+
+    database = client.get_database_client(
+        os.environ["COSMOS_DATABASE"]
+    )
+
+    return database.get_container_client(
+        os.environ["COSMOS_CONTAINER"]
+    )
 
 # Redis connection
 
@@ -198,6 +213,120 @@ def clean_dataset(myblob: func.InputStream):
 
 
 # HTTP API
+
+@app.route(
+    route="register",
+    methods=["POST"]
+)
+def register(req: func.HttpRequest):
+
+    body = req.get_json()
+
+    email = body["email"]
+    username = body["username"]
+    password = body["password"]
+
+    container = get_user_container()
+
+    users = list(
+        container.query_items(
+            query=
+            "SELECT * FROM c WHERE c.email=@email",
+            parameters=[
+                {
+                    "name":"@email",
+                    "value":email
+                }
+            ],
+            enable_cross_partition_query=True
+        )
+    )
+
+    if users:
+
+        return func.HttpResponse(
+            "User already exists",
+            status_code=409
+        )
+
+    password_hash = bcrypt.hashpw(
+        password.encode(),
+        bcrypt.gensalt()
+    ).decode()
+
+    user = {
+
+        "id": email,
+
+        "email": email,
+
+        "username": username,
+
+        "password_hash": password_hash
+    }
+
+    container.create_item(user)
+
+    return func.HttpResponse(
+        "User registered",
+        status_code=201
+    )
+    
+@app.route(
+route="login",
+methods=["POST"]
+)
+def login(req: func.HttpRequest):
+
+    body = req.get_json()
+
+    email = body["email"]
+    password = body["password"]
+
+    container = get_user_container()
+
+    users = list(
+        container.query_items(
+            query=
+            "SELECT * FROM c WHERE c.email=@email",
+            parameters=[
+                {
+                    "name":"@email",
+                    "value":email
+                }
+            ],
+            enable_cross_partition_query=True
+        )
+    )
+
+    if not users:
+
+        return func.HttpResponse(
+            "Invalid login",
+            status_code=401
+        )
+
+    user = users[0]
+
+    valid = bcrypt.checkpw(
+        password.encode(),
+        user["password_hash"].encode()
+    )
+
+    if not valid:
+
+        return func.HttpResponse(
+            "Invalid login",
+            status_code=401
+        )
+
+    return func.HttpResponse(
+        json.dumps({
+            "authenticated": True,
+            "username": user["username"]
+        }),
+        mimetype="application/json"
+    )
 
 @app.route(
     route="nutrition",

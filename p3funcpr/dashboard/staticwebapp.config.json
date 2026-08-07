@@ -1,0 +1,14 @@
+{
+  "routes": [
+    {
+      "route": "/index.html",
+      "allowedRoles": ["authenticated"]
+    }
+  ],
+
+  "responseOverrides": {
+    "401": {
+      "redirect": "/login.html"
+    }
+  }
+}
