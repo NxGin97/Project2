@@ -59,11 +59,11 @@
         </div>
       </section>
 
-      <section class="mb-8">
+      <section class="mb-4">
         <h2 class="text-2xl font-semibold mb-4">
           Filters and Data Interaction
         </h2>
-        <div class="flex flex-wrap gap-4">
+        <div class="flex flex-wrap gap-2">
           <input
             type="text"
             placeholder="Search by Diet Type"
@@ -81,6 +81,28 @@
         </div>
       </section>
 
+      <section class="mb-3">
+        <input
+          id="recipeSearch"
+          type="text"
+          placeholder="Search recipes by word"
+          class="p-2 border rounded"
+        />
+
+        <button
+          id="searchRecipes"
+          class="bg-green-600 text-white py-2 px-4 rounded"
+        >
+          Get Recipes
+        </button>
+      </section>
+
+      <section>
+        <div id="recipeResults"></div>
+        <button id="previousPage">Previous</button>
+        <button id="nextPage">Next</button>
+      </section>
+
       <section class="mb-8">
         <h2 class="text-2xl font-semibold mb-4">API Data Interaction</h2>
         <div class="flex flex-wrap gap-4">
@@ -90,16 +112,13 @@
           >
             Get Nutritional Insights
           </button>
-          <button class="bg-green-600 text-white py-2 px-4 rounded">
-            Get Recipes
-          </button>
           <button class="bg-purple-600 text-white py-2 px-4 rounded">
             Get Clusters
           </button>
         </div>
       </section>
 
-        <!-- <div class="bg-white shadow rounded p-4 mt-4">
+      <!-- <div class="bg-white shadow rounded p-4 mt-4">
           <h3 class="font-semibold">Function Metadata</h3>
 
           <p>
@@ -114,50 +133,81 @@
         </div>
       </section>  -->
 
-              <!-- Security & Compliance -->
-        <section class="mt-8">
-            <h2 class="text-2xl font-semibold mb-4">Security & Compliance</h2>
-            <div class="bg-white p-4 shadow-lg rounded-lg">
-                <h3 class="font-semibold">Security Status</h3>
-                <p class="text-sm text-gray-600">Encryption: <span class="font-semibold text-green-600">Enabled</span></p>
-                <p class="text-sm text-gray-600">Access Control: <span class="font-semibold text-green-600">Secure</span></p>
-                <p class="text-sm text-gray-600">Compliance: <span class="font-semibold text-green-600">GDPR Compliant</span></p>
-            </div>
-        </section>
+      <!-- Security & Compliance -->
+      <section class="mt-8">
+        <h2 class="text-2xl font-semibold mb-4">Security & Compliance</h2>
+        <div class="bg-white p-4 shadow-lg rounded-lg">
+          <h3 class="font-semibold">Security Status</h3>
+          <p class="text-sm text-gray-600">
+            Encryption:
+            <span class="font-semibold text-green-600">Enabled</span>
+          </p>
+          <p class="text-sm text-gray-600">
+            Access Control:
+            <span class="font-semibold text-green-600">Secure</span>
+          </p>
+          <p class="text-sm text-gray-600">
+            Compliance:
+            <span class="font-semibold text-green-600">GDPR Compliant</span>
+          </p>
+        </div>
+      </section>
 
-        <!-- OAuth / 2FA Integration -->
-        <section class="mt-8">
-            <h2 class="text-2xl font-semibold mb-4">OAuth & 2FA Integration</h2>
-            <div class="bg-white p-4 shadow-lg rounded-lg">
-                <h3 class="font-semibold">Secure Login</h3>
-                <button class="bg-blue-600 text-white py-2 px-4 rounded mb-4">Login with Google</button>
-                <button class="bg-blue-600 text-white py-2 px-4 rounded mb-4">Login with GitHub</button>
-                <div class="mt-4">
-                    <label for="2fa" class="block text-sm text-gray-600">Enter 2FA Code</label>
-                    <input id="2fa" type="text" class="p-2 border rounded w-full" placeholder="Enter your 2FA code">
-                </div>
-            </div>
-        </section>
+      <!-- OAuth / 2FA Integration -->
+      <section class="mt-8">
+        <h2 class="text-2xl font-semibold mb-4">OAuth & 2FA Integration</h2>
+        <div class="bg-white p-4 shadow-lg rounded-lg">
+          <h3 class="font-semibold">Secure Login</h3>
+          <button class="bg-blue-600 text-white py-2 px-4 rounded mb-4">
+            Login with Google
+          </button>
+          <button class="bg-blue-600 text-white py-2 px-4 rounded mb-4">
+            Login with GitHub
+          </button>
+          <div class="mt-4">
+            <label for="2fa" class="block text-sm text-gray-600"
+              >Enter 2FA Code</label
+            >
+            <input
+              id="2fa"
+              type="text"
+              class="p-2 border rounded w-full"
+              placeholder="Enter your 2FA code"
+            />
+          </div>
+        </div>
+      </section>
 
-        <!-- Cloud Resource Cleanup -->
-        <section class="mt-8">
-            <h2 class="text-2xl font-semibold mb-4">Cloud Resource Cleanup</h2>
-            <div class="bg-white p-4 shadow-lg rounded-lg">
-                <p class="text-sm text-gray-600">Ensure that cloud resources are efficiently managed and cleaned up post-deployment.</p>
-                <button class="bg-red-600 text-white py-2 px-4 rounded">Clean Up Resources</button>
-            </div>
-        </section>
+      <!-- Cloud Resource Cleanup -->
+      <section class="mt-8">
+        <h2 class="text-2xl font-semibold mb-4">Cloud Resource Cleanup</h2>
+        <div class="bg-white p-4 shadow-lg rounded-lg">
+          <p class="text-sm text-gray-600">
+            Ensure that cloud resources are efficiently managed and cleaned up
+            post-deployment.
+          </p>
+          <button class="bg-red-600 text-white py-2 px-4 rounded">
+            Clean Up Resources
+          </button>
+        </div>
+      </section>
 
-        <!-- Pagination -->
-        <section>
-            <h2 class="text-2xl font-semibold mb-4">Pagination</h2>
-            <div class="flex justify-center gap-2 mt-4">
-                <button class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">Previous</button>
-                <button class="px-3 py-1 bg-blue-600 text-white rounded">1</button>
-                <button class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">2</button>
-                <button class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">Next</button>
-            </div>
-        </section>
+      <!-- Pagination -->
+      <section>
+        <h2 class="text-2xl font-semibold mb-4">Pagination</h2>
+        <div class="flex justify-center gap-2 mt-4">
+          <button class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">
+            Previous
+          </button>
+          <button class="px-3 py-1 bg-blue-600 text-white rounded">1</button>
+          <button class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">
+            2
+          </button>
+          <button class="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">
+            Next
+          </button>
+        </div>
+      </section>
     </main>
 
     <footer class="bg-blue-600 p-4 text-white text-center mt-10">
@@ -166,11 +216,91 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        let currentPage = 1;
+
+        async function loadRecipes() {
+          let diet = document.getElementById("dietFilter").value;
+
+          let keyword = document.getElementById("recipeSearch").value;
+
+          let url = `https://natp3func.azurewebsites.net/api/recipes?page=${currentPage}&page_size=10`;
+
+          if (diet != "all") {
+            url += `&diet=${diet}`;
+          }
+
+          if (keyword) {
+            url += `&keyword=${keyword}`;
+          }
+
+          let response = await fetch(url);
+
+          console.log("Status:", response.status);
+
+          let data = await response.json();
+
+          console.log(data);
+
+          let html = "";
+
+          data.recipes.forEach((recipe) => {
+            html += `
+        <div class="bg-white p-4 shadow rounded">
+            <h3 class="font-semibold">
+                ${recipe.Recipe_name}
+            </h3>
+
+            <p>
+                Diet:
+                ${recipe.Diet_type}
+            </p>
+
+            <p>
+                Cuisine:
+                ${recipe.Cuisine}
+            </p>
+        </div>
+        `;
+          });
+
+          document.getElementById("recipeResults").innerHTML = html;
+        }
+        document
+          .getElementById("searchRecipes")
+          .addEventListener("click", function () {
+            currentPage = 1;
+            loadRecipes();
+          });
+
+        document
+          .getElementById("nextPage")
+          .addEventListener("click", function () {
+            currentPage++;
+
+            loadRecipes();
+          });
+
+        document
+          .getElementById("previousPage")
+          .addEventListener("click", function () {
+            if (currentPage > 1) {
+              currentPage--;
+              loadRecipes();
+            }
+          });
+
+        document
+          .getElementById("dietFilter")
+          .addEventListener("change", function () {
+            currentPage = 1;
+
+            loadRecipes();
+          });
         let barChart;
         let scatterChart;
         let pieChart;
         let heatmapChart;
-				let nutritionData = [];
+        let nutritionData = [];
 
         document
           .getElementById("loadData")
@@ -189,22 +319,20 @@
               //   data.records_processed;
               // console.log(data);
 
-							nutritionData = data.nutrition_data;
+              nutritionData = data.nutrition_data;
 
-							const filter = document.getElementById("dietFilter");
+              const filter = document.getElementById("dietFilter");
 
-							filter.innerHTML = '<option value="all">All Diet Types</option>';
+              filter.innerHTML = '<option value="all">All Diet Types</option>';
 
-							nutritionData.forEach(item => {
+              nutritionData.forEach((item) => {
+                let option = document.createElement("option");
 
-									let option = document.createElement("option");
+                option.value = item.Diet_type;
+                option.textContent = item.Diet_type;
 
-									option.value = item.Diet_type;
-									option.textContent = item.Diet_type;
-
-									filter.appendChild(option);
-
-							});
+                filter.appendChild(option);
+              });
 
               /*
               -------------------------
@@ -385,56 +513,37 @@
                     },
                   },
                 },
-								
               });
 
               // FILTER CONTROL
               document
-              .getElementById("dietFilter")
-              .addEventListener("change", function(){
-
+                .getElementById("dietFilter")
+                .addEventListener("change", function () {
                   let selected = this.value;
 
                   let filtered;
 
-
-                  if(selected == "all"){
-                      filtered = nutritionData;
-                  }
-                  else{
-                      filtered = nutritionData.filter(
-                          item => item.Diet_type == selected
-                      )
+                  if (selected == "all") {
+                    filtered = nutritionData;
+                  } else {
+                    filtered = nutritionData.filter(
+                      (item) => item.Diet_type == selected,
+                    );
                   }
 
+                  barChart.data.labels = filtered.map((item) => item.Diet_type);
 
-                  barChart.data.labels =
-                      filtered.map(
-                          item => item.Diet_type
-                      );
-
-
-                  barChart.data.datasets[0].data =
-                      filtered.map(
-                          item => item["Protein(g)"]
-                      );
-
+                  barChart.data.datasets[0].data = filtered.map(
+                    (item) => item["Protein(g)"],
+                  );
 
                   barChart.update();
-
-              });
-
-
-            } catch(error) {
-                console.error(
-                    "Error loading data:",
-                    error
-                );
+                });
+            } catch (error) {
+              console.error("Error loading data:", error);
             }
-
           });
       });
-
     </script>
   </body>
 </html>

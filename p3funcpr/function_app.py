@@ -224,3 +224,116 @@ def nutrition(req: func.HttpRequest):
         cached_data,
         mimetype="application/json"
     )
+    
+@app.route(
+route="recipes",
+methods=["GET"]
+)
+def recipes(req: func.HttpRequest):
+
+    connection_string = os.environ["AzureWebJobsStorage"]
+
+    blob_service_client = BlobServiceClient.from_connection_string(
+        connection_string
+    )
+
+
+    container_client = blob_service_client.get_container_client(
+        "processed"
+    )
+
+
+    blob_client = container_client.get_blob_client(
+        "Clean_Diets.csv"
+    )
+
+
+    blob_data = blob_client.download_blob().readall()
+
+
+    df = pd.read_csv(
+        io.BytesIO(blob_data)
+    )
+
+
+    # Get query parameters
+
+    diet = req.params.get("diet")
+    keyword = req.params.get("keyword")
+
+
+    # Filter by diet type
+
+    if diet and diet.lower() != "all":
+
+        df = df[
+            df["Diet_type"]
+            .str.lower()
+            ==
+            diet.lower()
+        ]
+
+
+    # Search recipe name
+
+    if keyword:
+
+        df = df[
+            df["Recipe_name"]
+            .str.contains(
+                keyword,
+                case=False,
+                na=False
+            )
+        ]
+
+
+    # Pagination
+
+    page = int(
+        req.params.get(
+            "page",
+            1
+        )
+    )
+
+
+    page_size = int(
+        req.params.get(
+            "page_size",
+            10
+        )
+    )
+
+
+    start = (page - 1) * page_size
+
+    end = start + page_size
+
+
+    results = df.iloc[start:end]
+
+
+    response = {
+
+        "page": page,
+
+        "page_size": page_size,
+
+        "total_results": len(df),
+
+        "recipes":
+            results.to_dict(
+                orient="records"
+            )
+
+    }
+
+
+    return func.HttpResponse(
+        json.dumps(
+            response,
+            default=str
+        ),
+        mimetype="application/json"
+    )
