@@ -11,7 +11,6 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix@2.0.0/dist/chartjs-chart-matrix.js"></script>
-    <script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
     <script>
       Chart.register(ChartMatrixController, MatrixElement);
     </script>
@@ -531,35 +530,10 @@ document
             currentPage = 1;
           });
 
-        const msalConfig = {
-          auth: {
-            clientId: "e196017e-b85e-4af5-baca-8934439cd764",
-            authority: "https://login.microsoftonline.com/common",
-            redirectUri: window.location.origin,
-          },
-        };
-
-        const msalInstance = new msal.PublicClientApplication(msalConfig);
-
-        document
-          .getElementById("loginButton")
-          .addEventListener("click", async () => {
-            try {
-              const loginResponse = await msalInstance.loginPopup({
-                scopes: ["User.Read"],
-              });
-
-              console.log(loginResponse);
-
-              alert("Welcome " + loginResponse.account.name);
-            } catch (error) {
-              console.error(error);
-            }
-          });
 
           document
-.getElementById("dashboard")
-.style.display="block";
+            .getElementById("dashboard")
+            .style.display="block";
 
         let barChart;
         let scatterChart;
