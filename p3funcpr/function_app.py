@@ -220,7 +220,13 @@ def clean_dataset(myblob: func.InputStream):
 )
 def register(req: func.HttpRequest):
 
-    body = req.get_json()
+    try:
+        body=req.get_json()
+    except:
+        return func.HttpResponse(
+            "Invalid JSON",
+            status_code=400
+    )
 
     email = body["email"]
     username = body["username"]
