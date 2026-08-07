@@ -1,14 +1,5 @@
 {
-  "routes": [
-    {
-      "route": "/index.html",
-      "allowedRoles": ["authenticated"]
-    }
-  ],
-
-  "responseOverrides": {
-    "401": {
-      "redirect": "/index.html"
-    }
+  "navigationFallback": {
+    "rewrite": "/index.html"
   }
 }
