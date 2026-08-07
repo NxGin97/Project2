@@ -112,7 +112,7 @@
     <main id="dashboard" style="display: none" class="container mx-auto p-6">
       <div class="p-4 mb-8 flex justify-between items-center ">
         <div class="flex flex-col gap-2 bg-blue-600">
-          <p class="text-3xl font-semibold text-white">Nutritional Insights</h1>
+          <p class="text-3xl font-semibold text-white">Nutritional Insights</p>
             <p class="text-xl font-bold text-gray-700">
               Welcome, <span id="dashboardUsername">User</span>
             </p>
@@ -310,7 +310,6 @@
 
             document.getElementById("authContainer").style.display = "none";
             document.getElementById("loginHeader").style.display = "none";
-
             document.getElementById("dashboard").style.display = "block";
 
             // Get username/email from Azure
@@ -343,15 +342,6 @@
           window.location.href = "/.auth/logout";
         });
 
-
-
-          const data = await response.json();
-
-          if (data.authenticated) {
-            document.getElementById("loginPanel").style.display = "none";
-
-            document.querySelector("main").style.display = "block";
-          }
 
       document.addEventListener("DOMContentLoaded", async function () {
         await getUser();
@@ -455,7 +445,13 @@ document
 
       const result = await response.text();
 
-      if (response.ok) {
+      console.log("Login status:", response.status);
+      console.log("Login response:", result);
+
+      if (!response.ok) {
+        alert("Invalid email or password.");
+        return;
+      }
 
         const data = JSON.parse(result);
 
@@ -479,11 +475,6 @@ document
 
         }
 
-      } else {
-
-        alert("Invalid email or password.");
-
-      }
 
     } catch (error) {
 
